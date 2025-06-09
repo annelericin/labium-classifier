@@ -37,7 +37,11 @@ def preprocess_image(image_bytes):
     image_array = np.array(image) / 255.0
     return np.expand_dims(image_array, axis=0)
 
-@app.route('/predict', methods=['POST'])
+@app.route("/", methods=["GET"])
+def home():
+    return "✅ API aktif. POST /predict endpoint'ini kullanın."
+
+@app.route("/predict", methods=["POST"])
 def predict():
     if model is None:
         return jsonify({'error': 'Model yüklenemedi'}), 500
@@ -62,6 +66,5 @@ def predict():
         return jsonify({'error': f'Tahmin sırasında hata: {str(e)}'}), 500
 
 if __name__ == '__main__':
-    import os
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
